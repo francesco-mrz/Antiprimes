@@ -1,3 +1,5 @@
+package antiprimes;
+
 import antiprimes.AntiPrimesSequence;
 import ui.MainWindow;
 
