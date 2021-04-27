@@ -31,6 +31,7 @@ public class AntiPrimesSequence {
      */
     public void reset() {
         antiPrimes.clear();
+        
         //INIZIALIZZA NUMERO DI PARTENZA
         addAntiPrime(new Number(1,1));
     }

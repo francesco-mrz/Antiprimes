@@ -18,7 +18,7 @@ public class NumberProcessor extends Thread {
 		LOGGER.info("Processor ready");
 		acceptRequests();
 
-		while (true) {
+		for(;;) {
 			try {
 				LOGGER.info("Waiting a new request");
 				Number n = getNextToProcess();
