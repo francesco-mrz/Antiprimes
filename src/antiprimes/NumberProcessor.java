@@ -35,19 +35,25 @@ public class NumberProcessor extends Thread {
 
 	}
 
-	synchronized public void nextAntiPrime(Number n) {
+	synchronized public void nextAntiPrime(Number n) throws InterruptedException {
 		while(request != null) {
 			if(request.getValue() == n.getValue()) {
-				
+				return;
 			}
+			wait();
 		}
+		request=n;
+		notify();
 	}
 
-	public Number getNextToProcess() {
-
+	synchronized public Number getNextToProcess() throws InterruptedException {
+		while(request==null){
+			wait();
+		}
+		return request;
 	}
 
-	public void acceptRequests() {
+	synchronized public void acceptRequests() {
 		request = null;
 		notify();
 	}

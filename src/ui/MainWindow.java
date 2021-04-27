@@ -2,17 +2,19 @@ package ui;
 
 import antiprimes.AntiPrimesSequence;
 import antiprimes.Number;
+import antiprimes.Observer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Observable;
 
 
 /**
  * The application window.
  */
-public class MainWindow extends JFrame {
+public class MainWindow extends JFrame implements Observer {
 
     private AntiPrimesSequence sequence;
     private DefaultListModel display = new DefaultListModel();
@@ -72,5 +74,15 @@ public class MainWindow extends JFrame {
         display.clear();
         for (Number n : sequence.getLastK(SHOW_LAST))
             display.add(0, "" + n.getValue() + " (" + n.getDivisors() + ")");
+    }
+
+    @Override
+    public void update() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                updateDisplay();
+            }
+        });
     }
 }

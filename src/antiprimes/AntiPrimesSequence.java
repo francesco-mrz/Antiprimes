@@ -13,7 +13,7 @@ public class AntiPrimesSequence {
      * The numbers in the sequence.
      */
     private List<Number> antiPrimes = new ArrayList<>();
-    
+    private List<Observer> observers= new ArrayList<>();
     private NumberProcessor processor;
     
 
@@ -24,7 +24,6 @@ public class AntiPrimesSequence {
     	processor = new NumberProcessor(this);
         this.reset();
         processor.start();
-        
     }
 
     /**
@@ -32,14 +31,24 @@ public class AntiPrimesSequence {
      */
     public void reset() {
         antiPrimes.clear();
-        antiPrimes.add(new Number(1, 1));
+        //INIZIALIZZA NUMERO DI PARTENZA
+        addAntiPrime(new Number(1,1));
+    }
+
+    public void addObserver(Observer observer){
+        observers.add(observer);
     }
 
     /**
      * Find a new antiprime and add it to the sequence.
      */
     public void computeNext() {
-        antiPrimes.add(AntiPrimes.nextAntiPrimeAfter(getLast()));
+        //antiPrimes.add(AntiPrimes.nextAntiPrimeAfter(getLast()));
+        try{
+            processor.nextAntiPrime(getLast());
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -60,8 +69,10 @@ public class AntiPrimesSequence {
         return antiPrimes.subList(n - k, n);
     }
 
-	public void addAntiPrime(Number m) {
-		antiPrimes.add(m);
-		
+	synchronized public void addAntiPrime(Number number) {
+		antiPrimes.add(number);
+		for (Observer observer : observers){
+		    observer.update();
+        }
 	}
 }
